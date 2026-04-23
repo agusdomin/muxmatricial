@@ -68,7 +68,7 @@ def main() -> None:
 
     # Generar matrices
     matrix_a, matrix_b = generate_matrices(args.complejidad)
-
+    matrix_b = transpose_matrix(matrix_b)
     # Realizar multiplicación A × B^T y medir tiempo
     start = perf_counter()
     result = matrix_multiply_with_transpose(matrix_a, matrix_b)
