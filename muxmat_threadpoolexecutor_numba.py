@@ -2,7 +2,7 @@ from concurrent.futures import ThreadPoolExecutor
 from time import perf_counter
 import argparse
 import random
-from numba import jit
+from numba import jit, prange
 import numpy as np
 
 def generate_matrices(size: int, seed: int = 2026):
@@ -11,12 +11,12 @@ def generate_matrices(size: int, seed: int = 2026):
     matrix_b = [[rng.random() for _ in range(size)] for _ in range(size)]
     return matrix_a, matrix_b
 
-@jit(nopython=True) # Compilar con Numba - esto optimiza significativamente
+@jit(nopython=True,parallel=True) # Compilar con Numba - esto optimiza significativamente
 def multiply_row_numba(matrix_a_row, matrix_b, size: int) -> list:
     """Calcula una fila de la multiplicación - compilada con Numba"""
     result_row = [0.0] * size
     
-    for j in range(size):
+    for j in prange(size):
         for k in range(size):
             result_row[j] += matrix_a_row[k] * matrix_b[k][j]
     

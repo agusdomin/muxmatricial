@@ -2,7 +2,7 @@ from concurrent.futures import ProcessPoolExecutor
 from time import perf_counter
 import argparse
 import random
-from numba import jit
+from numba import jit, njit, prange
 import numpy as np
 
 
@@ -16,7 +16,7 @@ def generate_matrices(size: int, seed: int = 2026):
     return matrix_a, matrix_b
 
 
-@jit(nopython=True)
+@jit(nopython=True, parallel=False)
 def multiply_row_numba(matrix_a_row, matrix_b, size: int) -> list:
     """Calcula una fila de la multiplicación - compilada con Numba"""
     result_row = [0.0] * size
